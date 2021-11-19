@@ -1,12 +1,11 @@
 """
 Creating jungle game
 """
-# change i n file
+
 # imports
 import pygame, sys
 from pygame.locals import *
 import random, time
-
 
 # initalize pygame
 pygame.init()
@@ -23,7 +22,7 @@ BLACK = (0,0,0)
 WHITE = (255,255,255)
 
 # display dimensions
-SCREEN_WIDTH = 400
+SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 600
 SPEED = 5
 SCORE = 0
@@ -32,8 +31,8 @@ SCORE = 0
 font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
 game_over = font.render("Game Over", True, BLACK)
- 
-background = pygame.image.load("forest.png")
+
+background = pygame.transform.scale(pygame.image.load("forest2.jpg"), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # setup a 300x300 pixel display
 DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -62,7 +61,7 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        self.image = pygame.image.load("Player.png")
+        self.image = pygame.transform.scale(pygame.image.load("mouse.png"), (60,60))
         self.rect = self.image.get_rect()
         self.rect.center = (160, 520)
  
@@ -111,7 +110,7 @@ while True:
             sys.exit()
  
  
-    DISPLAYSURF.fill(WHITE)
+    DISPLAYSURF.blit(background, (0,0))
  
     #Moves and Re-draws all Sprites
     for entity in all_sprites:
@@ -121,7 +120,7 @@ while True:
     #To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
         pygame.mixer.Sound('crash.wav').play()
-        time.sleep(0,5)
+        time.sleep(5)
 
         DISPLAYSURF.fill(RED)
         DISPLAYSURF.blit(game_over, (30,250))
