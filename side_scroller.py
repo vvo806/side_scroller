@@ -7,7 +7,6 @@ import pygame, sys
 from pygame.locals import *
 import random, time
 
-import Game from SCREEN_HEIGHT
 
 # initalize pygame
 pygame.init()
@@ -35,7 +34,7 @@ font_small = pygame.font.SysFont("Verdana", 20)
 game_over = font.render("Game Over", True, BLACK)
  
 background = pygame.image.load("forest.png")
-"""
+
 # setup a 300x300 pixel display
 DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 DISPLAYSURF.fill(WHITE)
@@ -136,4 +135,3 @@ while True:
          
     pygame.display.update()
     clock.tick(FPS)
-"""
