@@ -22,7 +22,7 @@ BLACK = (0,0,0)
 WHITE = (255,255,255)
 
 # display dimensions
-SCREEN_WIDTH = 500
+SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
 SPEED = 5
 SCORE = 0
@@ -42,18 +42,18 @@ pygame.display.set_caption("Game")
 class Enemy(pygame.sprite.Sprite):
       def __init__(self):
         super().__init__() 
-        self.image = pygame.image.load("Enemy.png")
+        self.image = pygame.transform.scale(pygame.image.load("snake.png"), (60,80))
         self.rect = self.image.get_rect()
-        self.rect.center=(random.randint(40,SCREEN_WIDTH-40),0) 
+        self.rect.center= (600, (random.randint(40, SCREEN_HEIGHT-40)))
  
       def move(self):
         global SCORE
-        self.rect.move_ip(0,10)
-        if (self.rect.bottom > 600):
+        self.rect.move_ip(-10,0)
+        if (self.rect.left < 0):
             SCORE += 1
-            self.rect.top = 0
-            self.rect.center = (random.randint(40,SCREEN_WIDTH-40), 0)
- 
+            self.rect.left = 600
+            self.rect.center = (600, (random.randint(40, SCREEN_HEIGHT-40)))
+
       def draw(self, surface):
         surface.blit(self.image, self.rect) 
  
@@ -61,16 +61,16 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        self.image = pygame.transform.scale(pygame.image.load("mouse.png"), (60,60))
+        self.image = pygame.transform.scale(pygame.image.load("mouse.png"), (60,80))
         self.rect = self.image.get_rect()
         self.rect.center = (160, 520)
  
     def move(self):
         pressed_keys = pygame.key.get_pressed()
-       #if pressed_keys[K_UP]:
-            #self.rect.move_ip(0, -5)
-       #if pressed_keys[K_DOWN]:
-            #self.rect.move_ip(0,5)
+        if pressed_keys[K_UP]:
+            self.rect.move_ip(0, -5)
+        if pressed_keys[K_DOWN]:
+            self.rect.move_ip(0,5)
          
         if self.rect.left > 0:
               if pressed_keys[K_LEFT]:
@@ -85,13 +85,16 @@ class Player(pygame.sprite.Sprite):
          
 P1 = Player()
 E1 = Enemy()
+E2 = Enemy()
 
 #creating Sprite groups
 enemies = pygame.sprite.Group()
 enemies.add(E1)
+enemies.add(E2)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1)
 all_sprites.add(E1)
+all_sprites.add(E2)
  
 #Adding a new User event 
 INC_SPEED = pygame.USEREVENT + 1
@@ -120,10 +123,10 @@ while True:
     #To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
         pygame.mixer.Sound('crash.wav').play()
-        time.sleep(5)
+        time.sleep(3)
 
         DISPLAYSURF.fill(RED)
-        DISPLAYSURF.blit(game_over, (30,250))
+        DISPLAYSURF.blit(game_over, (150, 150))
 
         pygame.display.update()
         for entity in all_sprites:
