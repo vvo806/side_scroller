@@ -63,7 +63,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__() 
         self.image = pygame.transform.scale(pygame.image.load("mouse.png"), (60,80))
         self.rect = self.image.get_rect()
-        self.rect.center = (140, 520)
+        self.rect.center = (130, 520)
  
     def move(self):
         pressed_keys = pygame.key.get_pressed()
@@ -88,11 +88,13 @@ class Player(pygame.sprite.Sprite):
 P1 = Player()
 E1 = Enemy()
 E2 = Enemy()
+E3 = Enemy()
 
 #creating Sprite groups
 enemies = pygame.sprite.Group()
 enemies.add(E1)
 enemies.add(E2)
+enemies.add(E3)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1)
 all_sprites.add(E1)
@@ -103,7 +105,7 @@ pygame.time.set_timer(INC_SPEED, 1000)
  
 #Game Loop
 while True:
-       
+    pygame.mixer.Sound('Jungle.wav').play()
     #Cycles through all events occuring  
     for event in pygame.event.get():
         if event.type == INC_SPEED:
@@ -112,7 +114,6 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
- 
  
     DISPLAYSURF.blit(background, (0,0))
     scores = font_small.render(str(SCORE), True, BLACK)
@@ -126,13 +127,13 @@ while True:
         if E1.rect.left < 100: #second snake comes in
             all_sprites.add(E2)
 
-        if SCORE == 20:
-            all_sprites.add(E2)
-
+    if SCORE == 15 and E2.rect.left < 100:
+        all_sprites.add(E3)
+        SPEED += 10
 
     #To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
-        pygame.mixer.Sound('eating_sound.wav').play()
+        pygame.mixer.Sound('RabbitEating.wav').play()
         time.sleep(3)
 
         DISPLAYSURF.fill(RED)
